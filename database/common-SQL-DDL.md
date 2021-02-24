@@ -7,7 +7,6 @@
 - ALTER
   - Databases
   - Tables
-  - Columns
 - DROP
 
 ## CREATE
@@ -72,13 +71,24 @@ ALTER DATABASE mydatabase
 
 ### Tables
 
-### Columns
+Add Columns
 
 ```sql
 ALTER TABLE examine.sys_user
-ADD COLUMN type TINYINT NULL COMMENT '账号类型（0正常，1舆情系统插入)'
-AFTER status;
+	ADD COLUMN type TINYINT NULL COMMENT '账号类型（0正常，1舆情系统插入)'
+	AFTER status;
 ```
+
+Drop Columns
+
+```sql
+ALTER TABLE table_name
+	DROP COLUMN column_name;
+```
+
+
+
+
 
 
 
