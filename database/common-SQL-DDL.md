@@ -14,13 +14,15 @@
 ### Databases
 
 ```sql
-CREATE DATABASE db_name
+CREATE DATABASE `db_name`
     [[DEFAULT] CHARACTER SET charset_name]
     [[DEFAULT] COLLATE collation_name]
 ```
 
+For example:
+
 ```sql
-CREATE DATABASE mydatabase 
+CREATE DATABASE `mydatabase` 
 	CHARACTER SET utf8mb4 
 	COLLATE utf8mb4_unicode_ci;
 ```
@@ -74,16 +76,16 @@ ALTER DATABASE mydatabase
 Add Columns
 
 ```sql
-ALTER TABLE examine.sys_user
-	ADD COLUMN type TINYINT NULL COMMENT '账号类型（0正常，1舆情系统插入)'
-	AFTER status;
+ALTER TABLE `examine`.`sys_user`
+	ADD COLUMN `type` TINYINT NULL COMMENT '账号类型（0正常，1舆情系统插入)'
+	AFTER `status`;
 ```
 
 Drop Columns
 
 ```sql
-ALTER TABLE table_name
-	DROP COLUMN column_name;
+ALTER TABLE `db_name`.`table_name`
+	DROP COLUMN `column_name`;
 ```
 
 
