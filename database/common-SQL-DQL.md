@@ -64,6 +64,15 @@ FROM employee
 ORDER BY salary DESC LIMIT 1, 1;
 ```
 
+Select with conditions
+
+```sql
+select 
+id, name,
+(select if(count(*)>0, true, false)) as flag
+from {tableName}
+```
+
 
 
 ### Aggregations
@@ -78,5 +87,47 @@ FROM {tableName}
 ```sql
 SELECT SUM(if(a.acceptor_id=#{userId} AND a.STATUS='accepted', 1, 0))
 FROM {tableName}
+```
+
+Nested group by and convert all sub group sum to all average
+
+```sql
+SELECT 
+biz as user_id, 
+#发布篇数
+SUM(publish_num_per_hour) as publish_num, 
+#发布次数（一个小时内发布的文章算1次发布）
+COUNT(*) AS publish_times,
+#平均阅读
+SUM(total_read_per_hour) / SUM(publish_num_per_hour) AS avg_read,
+#平均在看
+SUM(total_watch_per_hour) / SUM(publish_num_per_hour) AS avg_watch,
+#平均点赞
+SUM(total_like_per_hour) / SUM(publish_num_per_hour) AS avg_like,
+#阅读峰值
+MAX(max_read_during_hour) AS max_read,
+#在看峰值
+MAX(max_watch_during_hour) AS max_watch,
+#点赞峰值
+MAX(max_like_during_hour) AS max_like
+FROM 
+(
+    SELECT 
+    biz, 
+    DATE_FORMAT(data.pubtime, '%Y-%m-%d %H'), 
+    COUNT(*) AS publish_num_per_hour,
+    SUM(read_num) AS total_read_per_hour,
+    SUM(like_num) AS total_watch_per_hour,
+    SUM(thumb_num) AS total_like_per_hour,
+    MAX(read_num) AS max_read_during_hour,
+    MAX(like_num) AS max_watch_during_hour,
+    MAX(thumb_num) AS max_like_during_hour
+    from data_weixin_account as account
+    left join data_weixin as data
+    on account.weixin_biz_id = data.biz
+    WHERE data.biz IS NOT NULL AND account.weixin_biz_id IS NOT NULL 
+    GROUP BY  data.biz, DATE_FORMAT( data.pubtime, '%Y-%m-%d %H' )
+) AS temp1
+GROUP BY temp1.biz
 ```
 
