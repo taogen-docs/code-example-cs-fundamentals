@@ -73,6 +73,13 @@ id, name,
 from {tableName}
 ```
 
+if null then 0
+
+```sql
+IFNULL(expr1, 0)
+IFNULL(`field`,0)
+```
+
 
 
 ### Aggregations
