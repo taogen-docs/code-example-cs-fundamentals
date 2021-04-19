@@ -80,6 +80,13 @@ IFNULL(expr1, 0)
 IFNULL(`field`,0)
 ```
 
+case when {condition} then {val1} else {val1} 
+
+```sql
+select (case when column_key = 'PRI' then '1' else '0' end) as is_pk
+from information_schema.columns
+```
+
 
 
 ### Aggregations
