@@ -49,8 +49,11 @@ COMMENT='任务类型表';
 ### Indexes
 
 ```sql
-CREATE INDEX `title` USING BTREE ON `crm_knowledge_file` (title(64));
-CREATE INDEX `parent_id` USING BTREE ON `crm_knowledge_file_history` (parent_id);
+CREATE INDEX `title` USING BTREE 
+ON `crm_knowledge_file` (title(64));
+
+CREATE INDEX `parent_id` USING BTREE 
+ON `crm_knowledge_file_history` (parent_id);
 ```
 
 
