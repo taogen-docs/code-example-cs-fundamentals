@@ -76,6 +76,14 @@ ALTER DATABASE mydatabase
 
 ### Tables
 
+Update Table
+
+```mysql
+ALTER TABLE t1 RENAME t2;
+```
+
+
+
 Add Columns
 
 ```sql
@@ -91,10 +99,24 @@ ALTER TABLE `db_name`.`table_name`
 	DROP COLUMN `column_name`;
 ```
 
+Update Column Properties
 
+```mysql
+# update data type
+ALTER TABLE [tablename] MODIFY [columnName] [data_type] [is_null];
+```
 
-
+```mysql
+# update data type range
+ALTER TABLE [tablename] CHANGE [columnName] [columnName] DECIMAL (10,2)
+```
 
 
 
 ## DROP
+
+
+
+## References
+
+- [13.1.9.3 ALTER TABLE Examples - MySQL Documentation](https://dev.mysql.com/doc/refman/8.0/en/alter-table-examples.html)
