@@ -43,7 +43,7 @@ CREATE TABLE `customer_manage`.`crm_task_type` (
     modify_by INT NULL COMMENT '修改人',
     modify_time TIMESTAMP NULL ON UPDATE NOW() COMMENT '修改时间')
 ENGINE='InnoDB'
-COMMENT='任务类型表';
+COMMENT='任务类型';
 ```
 
 ### Indexes
