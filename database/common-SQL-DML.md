@@ -39,6 +39,12 @@ UPDATE TABLE2
 SET TABLE2.BRANCH_ID = TABLE1.CREATED_ID;
 ```
 
-
+```sql
+UPDATE `examine`.`examine_deposit_record` AS deposit
+	LEFT JOIN sys_user AS user ON deposit.create_by = user.user_id
+	LEFT JOIN sys_dept AS dept ON user.dept_id = dept.dept_id 
+SET deposit.dept_id = dept.dept_id
+WHERE deposit.dept_id IS null AND user.type = 1;
+```
 
 ## delete
