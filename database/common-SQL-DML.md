@@ -20,6 +20,18 @@ FROM
 ) AS temp;
 ```
 
+on duplicate key update
+
+```sql
+INSERT INTO recovery_words
+(words, type, group_id, user_name, user_id) 
+VALUES 
+("word 1", 3, -1, "admin", 1),
+("word 2", 3, -1, "admin", 1)
+ON DUPLICATE KEY UPDATE 
+words=words, `type` = `type`, group_id = group_id, `status`=`status`;
+```
+
 ## update
 
 Replacing string from http to https
