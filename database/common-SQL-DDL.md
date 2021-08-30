@@ -106,6 +106,11 @@ Update Column Properties
 ALTER TABLE [tablename] MODIFY [columnName] [data_type] [is_null];
 ```
 
+```sql
+# modify column to nullable
+ALTER TABLE guide_scheduler_weibo MODIFY start_time DATETIME null COMMENT '执行开始时间';
+```
+
 ```mysql
 # update data type range
 ALTER TABLE [tablename] CHANGE [columnName] [columnName] DECIMAL (10,2)

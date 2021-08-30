@@ -1,11 +1,47 @@
 # Common SQL DQL
 
-- select
-  - Queries
-  - Aggregations
-- call
+**Content**
 
-## select
+- Schema Query
+- Table Query
+  - Queries
+  - [Aggregations](#Aggregations)
+- Call Procedure or function
+
+## Schema Query
+
+List Table Sizes From a Single Database
+
+```sql
+SELECT
+  TABLE_NAME AS `Table`,
+  ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) AS `Size (MB)`
+FROM
+  information_schema.TABLES
+WHERE
+  TABLE_SCHEMA = "{database_name}"
+ORDER BY
+  (DATA_LENGTH + INDEX_LENGTH)
+DESC;
+```
+
+List All Table Sizes From ALL Databases
+
+```sql
+SELECT
+  TABLE_SCHEMA AS `Database`,
+  TABLE_NAME AS `Table`,
+  ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) AS `Size (MB)`
+FROM
+  information_schema.TABLES
+ORDER BY
+  (DATA_LENGTH + INDEX_LENGTH)
+DESC;
+```
+
+
+
+## Table Query
 
 ### Queries
 
@@ -91,7 +127,7 @@ from information_schema.columns
 
 ### Aggregations
 
-Count by conditions
+**Count by conditions**
 
 ```sql
 SELECT SUM(if(status=1, 1, 0)) 
@@ -103,7 +139,7 @@ SELECT SUM(if(a.acceptor_id=#{userId} AND a.STATUS='accepted', 1, 0))
 FROM {tableName}
 ```
 
-Nested group by and convert all sub group sum to all average
+**Nested group by and convert all sub group sum to all average**
 
 ```sql
 SELECT 
@@ -143,5 +179,28 @@ FROM
     GROUP BY  data.biz, DATE_FORMAT( data.pubtime, '%Y-%m-%d %H' )
 ) AS temp1
 GROUP BY temp1.biz
+```
+
+**GROUP_CONCAT**
+
+```sql
+SELECT name, GROUP_CONCAT(content SEPARATOR "|") AS content
+FROM keyword 
+GROUP BY name 
+ORDER BY id DESC
+```
+
+table data
+
+```
+name 	content
+name1	value1
+name1	value2
+```
+
+result
+
+```
+name1	value1|value2
 ```
 
