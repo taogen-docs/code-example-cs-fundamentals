@@ -76,13 +76,35 @@ ALTER DATABASE mydatabase
 
 ### Tables
 
-Update Table
+#### Rename Table
 
-```mysql
-ALTER TABLE t1 RENAME t2;
+```sql
+RENAME TABLE old_table TO new_table;
 ```
 
+```mysql
+ALTER TABLE old_table RENAME new_table;
+```
 
+#### Table options
+
+```sql
+ALTER TABLE t1 ENGINE = InnoDB;
+```
+
+```sql
+ALTER TABLE t1 AUTO_INCREMENT = 13;
+```
+
+```sql
+ALTER TABLE t1 CHARACTER SET = utf8;
+```
+
+```sql
+ALTER TABLE t1 COMMENT = 'New table comment';
+```
+
+#### Adding and Dropping Columns
 
 Add Columns
 
@@ -98,6 +120,8 @@ Drop Columns
 ALTER TABLE `db_name`.`table_name`
 	DROP COLUMN `column_name`;
 ```
+
+#### Renaming, Redefining, and Reordering Columns
 
 Update Column Properties
 
@@ -124,4 +148,7 @@ ALTER TABLE [tablename] CHANGE [columnName] [columnName] DECIMAL (10,2)
 
 ## References
 
+- [13.1.9 ALTER TABLE Statement](https://dev.mysql.com/doc/refman/8.0/en/alter-table.html)
 - [13.1.9.3 ALTER TABLE Examples - MySQL Documentation](https://dev.mysql.com/doc/refman/8.0/en/alter-table-examples.html)
+- [13.1.36 RENAME TABLE Statement](https://dev.mysql.com/doc/refman/8.0/en/rename-table.html)
+
