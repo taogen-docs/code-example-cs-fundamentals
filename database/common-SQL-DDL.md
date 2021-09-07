@@ -123,7 +123,27 @@ ALTER TABLE `db_name`.`table_name`
 
 #### Renaming, Redefining, and Reordering Columns
 
-Update Column Properties
+alter column
+
+> Used to set or remove the default value for a column.
+
+```sql
+ALTER TABLE MyTable ALTER COLUMN foo SET DEFAULT 'bar';
+ALTER TABLE MyTable ALTER COLUMN foo DROP DEFAULT;
+```
+
+change column
+
+> Used to rename a column, change its datatype, or move it
+
+```sql
+ALTER TABLE MyTable CHANGE COLUMN foo bar VARCHAR(32) NOT NULL FIRST;
+ALTER TABLE MyTable CHANGE COLUMN foo bar VARCHAR(32) NOT NULL AFTER baz;
+```
+
+modify column
+
+> Used to do everything CHANGE COLUMN can, but without renaming the column.
 
 ```mysql
 # update data type
@@ -135,9 +155,15 @@ ALTER TABLE [tablename] MODIFY [columnName] [data_type] [is_null];
 ALTER TABLE guide_scheduler_weibo MODIFY start_time DATETIME null COMMENT '执行开始时间';
 ```
 
+```sql
+# set default value and extra
+ALTER TABLE [tablename] MODIFY create_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间';
+ALTER TABLE [tablename] MODIFY update_time DATETIME NULL ON UPDATE NOW() COMMENT '修改时间';
+```
+
 ```mysql
 # update data type range
-ALTER TABLE [tablename] CHANGE [columnName] [columnName] DECIMAL (10,2)
+ALTER TABLE [tablename] CHANGE [columnName] DECIMAL (10,2)
 ```
 
 
@@ -151,4 +177,5 @@ ALTER TABLE [tablename] CHANGE [columnName] [columnName] DECIMAL (10,2)
 - [13.1.9 ALTER TABLE Statement](https://dev.mysql.com/doc/refman/8.0/en/alter-table.html)
 - [13.1.9.3 ALTER TABLE Examples - MySQL Documentation](https://dev.mysql.com/doc/refman/8.0/en/alter-table-examples.html)
 - [13.1.36 RENAME TABLE Statement](https://dev.mysql.com/doc/refman/8.0/en/rename-table.html)
+- [MySQL ALTER TABLE: ALTER vs CHANGE vs MODIFY COLUMN](https://hoelz.ro/ref/mysql-alter-table-alter-change-modify-column)
 
