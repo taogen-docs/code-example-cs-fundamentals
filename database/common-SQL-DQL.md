@@ -4,7 +4,9 @@
 
 - Schema Query
 - Table Query
-  - Queries
+  - [Queries](#queries)
+    - [Conditional Query](#Conditional Query)
+    - [Deduplicate](#Deduplicate)
   - [Aggregations](#Aggregations)
 - Call Procedure or function
 
@@ -51,13 +53,6 @@ Query insert row primary key 'id'
 SELECT @userId := LAST_INSERT_ID();
 ```
 
-Select distinct columns
-
-```sql
-SELECT DISTINCT user_id 
-FROM {tableName}
-```
-
 Select domain from URL
 
 ```sql
@@ -80,25 +75,7 @@ SELECT  *, ROW_NUMBER() OVER(ORDER BY id) AS row_num
 FROM crm_account
 ```
 
-query to find the Second highest salary from table
-
-```sql
-SELECT MAX(salary)
-FROM employees
-WHERE salary NOT IN ( SELECT Max(salary) FROM employees);
-```
-
-```sql
-SELECT MAX(salary) 
-FROM employees
-WHERE salary < ( SELECT Max(salary) FROM employees);
-```
-
-```sql
-SELECT DISTINCT salary 
-FROM employee 
-ORDER BY salary DESC LIMIT 1, 1;
-```
+### Conditional Query
 
 Select with conditions
 
@@ -123,9 +100,44 @@ select (case when column_key = 'PRI' then '1' else '0' end) as is_pk
 from information_schema.columns
 ```
 
+### Deduplicate
 
+Select distinct columns
+
+```sql
+SELECT DISTINCT {distinct_column_1} {distinct_column_2}
+FROM {tableName}
+```
+
+select distinct columns by group
+
+```sql
+SELECT {grouped_column_1}, {grouped_column_2}
+FROM {tableName}
+GROUP BY {grouped_column_1}, {grouped_column_2}
+```
 
 ### Aggregations
+
+query to find the Second highest salary from table
+
+```sql
+SELECT MAX(salary)
+FROM employees
+WHERE salary NOT IN ( SELECT Max(salary) FROM employees);
+```
+
+```sql
+SELECT MAX(salary) 
+FROM employees
+WHERE salary < ( SELECT Max(salary) FROM employees);
+```
+
+```sql
+SELECT DISTINCT salary 
+FROM employee 
+ORDER BY salary DESC LIMIT 1, 1;
+```
 
 **Count by conditions**
 
