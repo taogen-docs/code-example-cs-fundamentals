@@ -119,6 +119,8 @@ GROUP BY {grouped_column_1}, {grouped_column_2}
 
 ### Aggregations
 
+#### N highest value
+
 query to find the Second highest salary from table
 
 ```sql
@@ -139,7 +141,7 @@ FROM employee
 ORDER BY salary DESC LIMIT 1, 1;
 ```
 
-**Count by conditions**
+#### Aggregation by conditions
 
 ```sql
 SELECT SUM(if(status=1, 1, 0)) 
@@ -151,7 +153,9 @@ SELECT SUM(if(a.acceptor_id=#{userId} AND a.STATUS='accepted', 1, 0))
 FROM {tableName}
 ```
 
-**Nested group by and convert all sub group sum to all average**
+#### Nested group
+
+Nested group by and convert all sub group sum to all average
 
 ```sql
 SELECT 
@@ -193,7 +197,9 @@ FROM
 GROUP BY temp1.biz
 ```
 
-**GROUP_CONCAT**
+#### GROUP_CONCAT
+
+concat column values of a group to a string
 
 ```sql
 SELECT name, GROUP_CONCAT(content SEPARATOR "|") AS content
@@ -214,5 +220,21 @@ result
 
 ```
 name1	value1|value2
+```
+
+#### Group by date
+
+```sql
+select site_id,DATE_FORMAT(pubtime, '%Y%m'), count(*) as '文章数', sum(LENGTH(CONTENT)) as "字数"
+from my_data
+GROUP By site_id, DATE_FORMAT(pubtime, '%Y%m')
+ORDER by sum(LENGTH(CONTENT)) desc
+```
+
+```sql
+select site_id, year(pubtime), month(pubtime), count(*) as '文章数', sum(LENGTH(CONTENT)) as "字数"
+from my_data
+GROUP By site_id, year(pubtime), month(pubtime)
+ORDER by sum(LENGTH(CONTENT)) desc
 ```
 
