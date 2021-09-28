@@ -145,6 +145,8 @@ ORDER BY salary DESC LIMIT 1, 1;
 
 top 3 employees for learning course hours in every company
 
+> tip: the max number of "top 3 values of a group less than all values of a group" is 2, also 0, or 1 (because the number of values of a group may less than 3)
+
 ```sql
 select a.employee_id, a.company_id, a.hours 
 from my_table a 
