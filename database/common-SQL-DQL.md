@@ -141,6 +141,31 @@ FROM employee
 ORDER BY salary DESC LIMIT 1, 1;
 ```
 
+#### Top N
+
+top 3 employees for learning course hours in every company
+
+```sql
+select a.employee_id, a.company_id, a.hours 
+from my_table a 
+WHERE 
+(
+    SELECT COUNT(*)    
+    from my_table b 
+    where b.company_id = a.company_id AND a.hours < b.hours
+) < 3
+order by a.company_id, a.hours desc;
+```
+
+```sql
+SELECT a.employee_id, a.company_id, a.hours 
+FROM my_table a
+LEFT JOIN my_table b ON a.company_id = b.company_id AND a.hours < b.hours
+GROUP BY a.employee_id
+HAVING COUNT(*) < 3
+ORDER BY a.company_id, a.hours DESC;
+```
+
 #### Aggregation by conditions
 
 ```sql
