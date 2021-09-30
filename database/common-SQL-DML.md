@@ -1,12 +1,15 @@
 # Common SQL DML
 
 - insert
+  - insert from select
+  - on duplicate key update
+  - generating random data
 - update
 - delete
 
 ## insert
 
-insert from select
+### insert from select
 
 ```sql
 INSERT INTO `my_db`.`menu` 
@@ -20,7 +23,7 @@ FROM
 ) AS temp;
 ```
 
-on duplicate key update
+### on duplicate key update
 
 ```sql
 INSERT INTO recovery_words
@@ -31,6 +34,84 @@ VALUES
 ON DUPLICATE KEY UPDATE 
 words=words, `type` = `type`, group_id = group_id, `status`=`status`;
 ```
+
+### generating random data
+
+- random integer (i <= R < j)
+  - `select FLOOR(i + RAND() * (j - i))`
+- random string: 
+  - `select SUBSTRING(MD5(RAND()) FROM 1 FOR stringLength) `
+- random date:
+  - `select TIMESTAMPADD(SECOND, FLOOR(RAND() * TIMESTAMPDIFF(SECOND, startDateTime, endDateTime)), startDateTime)`
+- random records: 
+  - `SELECT user_id FROM sys_user ORDER BY RAND() LIMIT 1`
+
+```sql
+DROP PROCEDURE IF EXISTS sp_generateRandom_data;
+
+DELIMITER //
+CREATE PROCEDURE sp_generateRandom_data(IN rowNum INT)
+	BEGIN
+        DECLARE i INT;
+        SET i = 1;
+        START TRANSACTION;
+        WHILE i <= rowNum DO
+            INSERT INTO ...
+            SET i = i + 1;
+        END WHILE;
+        COMMIT;
+    END //
+DELIMITER ;
+
+CALL sp_generateRandom_data(100);
+```
+
+```sql
+DROP FUNCTION IF EXISTS sf_get_random_integer;
+
+DELIMITER //
+CREATE FUNCTION sf_get_random_integer (minVal INT, maxVal INT)
+RETURNS INT DETERMINISTIC
+BEGIN
+    declare result INT;
+    set result = FLOOR(minVal + RAND() * (maxVal - minVal));
+    RETURN result;  
+END //
+DELIMITER ;
+
+SELECT sf_get_random_integer(1, 10); # return a value from [1, 10)
+```
+
+```sql
+DROP FUNCTION IF EXISTS sf_get_random_string;
+
+DELIMITER //
+CREATE FUNCTION sf_get_random_string (stringLength INT)
+RETURNS VARCHAR(32) DETERMINISTIC
+BEGIN
+	RETURN SUBSTRING(MD5(RAND()) FROM 1 FOR stringLength);
+END //
+DELIMITER ;
+
+SELECT sf_get_random_string(32); # return a string with 32 characters
+```
+
+```sql
+DROP FUNCTION IF EXISTS sf_get_random_datetime;
+
+DELIMITER //
+CREATE FUNCTION sf_get_random_datetime (startDateTime DATETIME, endDateTime DATETIME)
+RETURNS DATETIME DETERMINISTIC
+BEGIN
+	RETURN TIMESTAMPADD(SECOND, FLOOR(RAND() * TIMESTAMPDIFF(SECOND, startDateTime, endDateTime)), startDateTime);
+END //
+DELIMITER ;
+
+SELECT sf_get_random_datetime('2021-08-01 00:00:00', '2021-10-01 00:00:00');
+SELECT date(sf_get_random_datetime('2021-08-01 00:00:00', '2021-10-01 00:00:00'));
+```
+
+
 
 ## update
 
