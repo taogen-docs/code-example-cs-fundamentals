@@ -47,10 +47,11 @@ words=words, `type` = `type`, group_id = group_id, `status`=`status`;
   - `SELECT user_id FROM sys_user ORDER BY RAND() LIMIT 1`
 
 ```sql
-DROP PROCEDURE IF EXISTS sp_generateRandom_data;
+DROP PROCEDURE IF EXISTS sp_generate_random_data;
 
 DELIMITER //
-CREATE PROCEDURE sp_generateRandom_data(IN rowNum INT)
+CREATE PROCEDURE sp_generate_random_data(IN rowNum INT)
+COMMENT 'generate n rows random data'
 	BEGIN
         DECLARE i INT;
         SET i = 1;
@@ -63,7 +64,7 @@ CREATE PROCEDURE sp_generateRandom_data(IN rowNum INT)
     END //
 DELIMITER ;
 
-CALL sp_generateRandom_data(100);
+CALL sp_generate_random_data(100);
 ```
 
 ```sql
@@ -72,6 +73,7 @@ DROP FUNCTION IF EXISTS sf_get_random_integer;
 DELIMITER //
 CREATE FUNCTION sf_get_random_integer (minVal INT, maxVal INT)
 RETURNS INT DETERMINISTIC
+COMMENT 'return random integer in [minVal, maxVal)'
 BEGIN
     declare result INT;
     set result = FLOOR(minVal + RAND() * (maxVal - minVal));
@@ -88,6 +90,7 @@ DROP FUNCTION IF EXISTS sf_get_random_string;
 DELIMITER //
 CREATE FUNCTION sf_get_random_string (stringLength INT)
 RETURNS VARCHAR(32) DETERMINISTIC
+COMMENT 'return a random string with n characters'
 BEGIN
 	RETURN SUBSTRING(MD5(RAND()) FROM 1 FOR stringLength);
 END //
@@ -102,6 +105,7 @@ DROP FUNCTION IF EXISTS sf_get_random_datetime;
 DELIMITER //
 CREATE FUNCTION sf_get_random_datetime (startDateTime DATETIME, endDateTime DATETIME)
 RETURNS DATETIME DETERMINISTIC
+COMMENT 'return a random datetime between startDateTime and endDateTime'
 BEGIN
 	RETURN TIMESTAMPADD(SECOND, FLOOR(RAND() * TIMESTAMPDIFF(SECOND, startDateTime, endDateTime)), startDateTime);
 END //
