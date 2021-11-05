@@ -115,6 +115,23 @@ SELECT sf_get_random_datetime('2021-08-01 00:00:00', '2021-10-01 00:00:00');
 SELECT date(sf_get_random_datetime('2021-08-01 00:00:00', '2021-10-01 00:00:00'));
 ```
 
+```sql
+DROP FUNCTION IF EXISTS sf_get_random_user_id;
+
+DELIMITER //
+CREATE FUNCTION sf_get_random_user_id ()
+RETURNS BIGINT DETERMINISTIC
+COMMENT 'return a random userId'
+BEGIN
+	DECLARE userId BIGINT;
+	SELECT user_id INTO userId FROM sys_user ORDER BY RAND() LIMIT 1;
+	RETURN userId;
+END //
+DELIMITER ;
+
+SELECT sf_get_random_user_id();
+```
+
 
 
 ## update
