@@ -9,6 +9,7 @@
     - [Deduplicate](#Deduplicate)
   - [Aggregations](#Aggregations)
 - Call Procedure or function
+- Built-In Functions
 
 ## Schema Query
 
@@ -93,6 +94,12 @@ IFNULL(expr1, 0)
 IFNULL(`field`,0)
 ```
 
+if match a special value set value to null
+
+```sql
+nullif(field, 'empty')
+```
+
 case when {condition} then {val1} else {val1} 
 
 ```sql
@@ -118,6 +125,13 @@ GROUP BY {grouped_column_1}, {grouped_column_2}
 ```
 
 ### Aggregations
+
+#### Common Usage
+
+Remove null value of group field
+
+1. having count(your_group_field)>0
+2. where your_group_field is not null
 
 #### N highest value
 
@@ -265,3 +279,110 @@ GROUP By site_id, year(pubtime), month(pubtime)
 ORDER by sum(LENGTH(CONTENT)) desc
 ```
 
+## Built-In Functions
+
+Reference [Chapter 12 Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/functions.html)
+
+### Date and time functions
+
+Get Date Time
+
+- date
+  - `CURDATE()`, `CURRENT_DATE()`, `CURRENT_DATE`
+- datetime
+  - `NOW()`, `CURRENT_TIMESTAMP()`, `CURRENT_TIMESTAMP`, `LOCALTIME()`, `LOCALTIME`, `LOCALTIMESTAMP`, `LOCALTIMESTAMP()`
+- time
+  - `CURTIME()`, `CURRENT_TIME()`, `CURRENT_TIME`
+
+Date Conversion
+
+- `CONVERT_TZ()`
+- `FROM_UNIXTIME(1447430881)`
+- `MAKEDATE()`
+- `MAKETIME()`
+- `STR_TO_DATE()`
+- `SEC_TO_TIME()`
+- `TIME_TO_SEC()`
+
+
+Date Extraction
+
+- `EXTRACT()`
+- `YEAR()`
+- `QUARTER()`
+- `MONTH()`, `MONTHNAME()`
+- `WEEK()`, `WEEKDAY()`, `WEEKOFYEAR()`
+- Date
+  - `DATE()`
+  - `DAY()`, `DAYOFMONTH()`
+  - `DAYNAME()`, `DAYOFWEEK()`
+  - `DAYOFYEAR()`
+  - `LAST_DAY`
+- Time
+  - TIME()
+  - `HOUR()`
+  - `MINUTE()`
+  - `SECOND()`
+  - `MICROSECOND()`
+
+Date Computation
+
+- Date
+  - `ADDDATE()`, `DATE_ADD()`
+  - `DATE_SUB(NOW(), INTERVAL 10 MINUTE)`, `SUBDATE()`
+  - `DATEDIFF()`
+- Time
+  - `ADDTIME()`
+  - `SUBTIME()`
+  - `TIMEDIFF()`
+  - `TIMESTAMPADD()`
+  - `TIMESTAMPDIFF()`
+
+Date Format
+
+- `DATE_FORMAT()`
+- `TIME_FORMAT()`
+
+### String Functions
+
+String Info
+
+- `LENGTH(str)`
+- `CHAR_LENGTH(str)`, `CHARACTER_LENGTH(str)`
+
+Conversion
+
+- `UPPER()`
+- `LOWER()`
+- `REVERSE(str)`
+
+Handling
+
+- get substring
+  - `SUBSTR(str,pos)`, `SUBSTR(str,pos,len)`, `SUBSTRING(str,pos)`
+  - `LEFT(str,len)`
+  - `RIGHT(str,len)`
+- find
+  - `LOCATE(substr, str)`, `POSITION(substr in str)`
+  - `FIND_IN_SET(str, strList)`
+- Match
+  - `expression LIKE pattern`
+  - `expression REGEX pattern`
+- Encode/Decode
+  -  `TO_BASE64(str)`, `FROM_BASE64(str)`
+  -  `HEX(str)`, `UNHEX(str)`
+- Others
+  - `CONCAT(str1, str2,...)`, `CONCAT_WS(seperator, str1, str2,...)`
+  - `REPLACE(str, from_str, to_str)`
+
+### Number Functions
+
+- Computation
+  - `ABS(x)`
+  - `LN(x)`, `LOG(B,X)`, `LOG10(x)`, `LOG2(x)`
+- float to integer
+  - `CEIL(x)`, `CEILING(x)`
+  - `FLOOR(x)`
+  - `ROUND(x)`
+- Others
+  - `RAND()`. Returns a random floating-point value v in the range `0 <= v < 1.0`. To obtain a random integer R in the range `i <= R < j`, use the expression `FLOOR(i + RAND() * (j − i))`.
