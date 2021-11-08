@@ -340,8 +340,8 @@ Date Computation
 
 Date Format
 
-- `DATE_FORMAT()`
-- `TIME_FORMAT()`
+- `DATE_FORMAT(NOW(), "%Y-%m-%d %H:%i:%s")`
+- `TIME_FORMAT(CURTIME(), "%H:%i:%s")`
 
 ### String Functions
 
@@ -386,3 +386,26 @@ Handling
   - `ROUND(x)`
 - Others
   - `RAND()`. Returns a random floating-point value v in the range `0 <= v < 1.0`. To obtain a random integer R in the range `i <= R < j`, use the expression `FLOOR(i + RAND() * (j − i))`.
+
+## Common Usage
+
+### Recent Date Time
+
+Recent 7 days (contains today)
+
+```sql
+select DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 6 DAY), '%Y-%m-%d 00:00:00')
+```
+
+Recent 30 days (contains today)
+
+```sql
+select DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 29 DAY), '%Y-%m-%d 00:00:00')
+```
+
+Recent 1 month
+
+```sql
+select DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%Y-%m-%d 00:00:00')
+```
+
