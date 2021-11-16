@@ -409,3 +409,26 @@ Recent 1 month
 select DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%Y-%m-%d 00:00:00')
 ```
 
+### String
+
+Find in set
+
+```sql
+where FIND_IN_SET("a", "a,b,c") > 0
+```
+
+remove from set
+
+```sql
+REPLACE(CONCAT(',', 'a,b,c', ','), CONCAT(',', 'a', ','), ',')
+```
+
+```sql
+update {your_table}
+set {your_column} = 
+	TRIM(BOTH ',' FROM
+         REPLACE(CONCAT(',', {your_column}, ','), CONCAT(',', #{remove_val}, ','), ',')
+	)
+where ....
+```
+
