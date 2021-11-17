@@ -1,5 +1,4 @@
 # Common SQL DCL
 
-- grant
-- rollback
-- commit
+- GRANT
+- REVOKE

@@ -8,6 +8,7 @@
   - Databases
   - Tables
 - DROP
+- TRUNCATE
 
 ## CREATE
 

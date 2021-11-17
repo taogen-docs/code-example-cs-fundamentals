@@ -1,11 +1,13 @@
 # Common SQL DML
 
-- insert
+- INSERT
   - insert from select
   - on duplicate key update
   - generating random data
-- update
-- delete
+- UPDATE
+- DELTE
+- CALL
+- LOCK
 
 ## insert
 
@@ -55,12 +57,10 @@ COMMENT 'generate n rows random data'
 	BEGIN
         DECLARE i INT;
         SET i = 1;
-        START TRANSACTION;
         WHILE i <= rowNum DO
             INSERT INTO ...
             SET i = i + 1;
         END WHILE;
-        COMMIT;
     END //
 DELIMITER ;
 
