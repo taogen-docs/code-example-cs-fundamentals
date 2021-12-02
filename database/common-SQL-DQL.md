@@ -124,6 +124,36 @@ FROM {tableName}
 GROUP BY {grouped_column_1}, {grouped_column_2}
 ```
 
+### Select Children
+
+select children
+
+```sql
+SELECT * FROM {my_table} AS a
+INNER JOIN {my_table} AS b ON a.parent_id = b.id
+WHERE 
+-- second level
+a.parent_id = 349 OR 
+-- third level
+b.parent_id = 349
+```
+
+select children and self
+
+```sql
+SELECT * FROM {my_table} AS a
+LEFT JOIN {my_table} AS b ON a.parent_id = b.id
+WHERE 
+-- first level(myself)
+a.id=349 OR 
+-- second level
+a.parent_id = 349 OR 
+-- third level
+b.parent_id = 349
+```
+
+
+
 ### Aggregations
 
 #### Common Usage
@@ -342,6 +372,10 @@ Date Format
 
 - `DATE_FORMAT(NOW(), "%Y-%m-%d %H:%i:%s")`
 - `TIME_FORMAT(CURTIME(), "%H:%i:%s")`
+
+Date Time Build
+
+- `concat(date(yourcolumn), ' 21:00:00')`
 
 ### String Functions
 

@@ -116,6 +116,12 @@ SELECT date(sf_get_random_datetime('2021-08-01 00:00:00', '2021-10-01 00:00:00')
 ```
 
 ```sql
+-- random time: 9:00 ~ 18:00
+select @randomTime := MAKETIME(FLOOR(9 + RAND() * (18 - 9)), FLOOR(0 + RAND() * (59 - 0)), FLOOR(0 + RAND() * (59 - 0)))
+insert into {your_table} (create_time,...) values (CONCAT('2021-11-22', @randomTime),...)
+```
+
+```sql
 DROP FUNCTION IF EXISTS sf_get_random_user_id;
 
 DELIMITER //
