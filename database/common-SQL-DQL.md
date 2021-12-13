@@ -8,6 +8,7 @@
     - [Conditional Query](#Conditional Query)
     - [Deduplicate](#Deduplicate)
   - [Aggregations](#Aggregations)
+- [Table Schema Query](#Table Schema Query)
 - Call Procedure or function
 - Built-In Functions
 
@@ -308,6 +309,41 @@ from my_data
 GROUP By site_id, year(pubtime), month(pubtime)
 ORDER by sum(LENGTH(CONTENT)) desc
 ```
+
+## Table Schema Query
+
+Databases
+
+```sql
+SHOW databases;
+```
+
+Tables
+
+```sql
+DESC `table_name`;
+```
+
+```sql
+SHOW CREATE TABLE `table_name`;
+```
+
+Columns
+
+```sql
+SHOW COLUMNS FROM `table_name` LIKE 'column_name';
+```
+
+```sql
+SELECT * 
+FROM information_schema.COLUMNS 
+WHERE 
+    TABLE_SCHEMA = 'db_name' 
+AND TABLE_NAME = 'table_name' 
+AND COLUMN_NAME = 'column_name'
+```
+
+
 
 ## Built-In Functions
 
