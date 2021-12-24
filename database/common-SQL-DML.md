@@ -37,7 +37,7 @@ ON DUPLICATE KEY UPDATE
 words=words, `type` = `type`, group_id = group_id, `status`=`status`;
 ```
 
-### generating random data
+### Use Procedures to generating random data
 
 - random integer (i <= R < j)
   - `select FLOOR(i + RAND() * (j - i))`
@@ -54,14 +54,14 @@ DROP PROCEDURE IF EXISTS sp_generate_random_data;
 DELIMITER //
 CREATE PROCEDURE sp_generate_random_data(IN rowNum INT)
 COMMENT 'generate n rows random data'
-	BEGIN
-        DECLARE i INT;
-        SET i = 1;
-        WHILE i <= rowNum DO
-            INSERT INTO ...
-            SET i = i + 1;
-        END WHILE;
-    END //
+BEGIN
+	DECLARE i INT;
+    SET i = 1;
+    WHILE i <= rowNum DO
+    	INSERT INTO ...
+        SET i = i + 1;
+	END WHILE;
+END //
 DELIMITER ;
 
 CALL sp_generate_random_data(100);
@@ -166,5 +166,43 @@ UPDATE `examine`.`examine_deposit_record` AS deposit
 SET deposit.dept_id = dept.dept_id
 WHERE deposit.dept_id IS null AND user.type = 1;
 ```
+
+### Use Procedures to Update
+
+```sql
+DROP PROCEDURE IF EXISTS update_account_proxy;
+
+DELIMITER //
+CREATE PROCEDURE update_account_proxy()
+COMMENT 'update account proxy. The same type of accounts have unique proxy_id'
+begin
+    declare typeCount int;
+    declare currType int;
+    declare j INT;
+    DECLARE accountCount INT;
+    DECLARE i INT;
+    declare currAccountId INT;
+    declare currProxyId INT;
+    select count(distinct type) into typeCount from guide_account;
+    set j = 0;
+    WHILE j < typeCount DO
+        select distinct type into currType from guide_account limit j, 1;
+        select count(*) into accountCount from guide_account ga where ga.`type` = currType;
+        SET i = 0;
+        WHILE i < accountCount DO
+            select id into currAccountId from guide_account ga where type = currType limit i, 1;
+            select id into currProxyId from guide_proxy gp limit i, 1;
+            update guide_account as ga set proxy_id = currProxyId where id = currAccountId;
+            SET i = i + 1;
+        END WHILE;
+        set j = j + 1;
+    END WHILE;
+END //
+DELIMITER ;
+
+CALL update_account_proxy();
+```
+
+
 
 ## delete
