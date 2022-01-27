@@ -182,7 +182,8 @@ begin
     DECLARE accountCount INT;
     DECLARE i INT;
     declare currAccountId INT;
-    declare currProxyId INT;
+    declare currProxyId varchar(512);
+    update examine.guide_account set proxy_info = null;
     select count(distinct type) into typeCount from guide_account;
     set j = 0;
     WHILE j < typeCount DO
@@ -190,9 +191,9 @@ begin
         select count(*) into accountCount from guide_account ga where ga.`type` = currType;
         SET i = 0;
         WHILE i < accountCount DO
-            select id into currAccountId from guide_account ga where type = currType limit i, 1;
-            select id into currProxyId from guide_proxy gp limit i, 1;
-            update guide_account as ga set proxy_id = currProxyId where id = currAccountId;
+            select id into currAccountId from guide_account ga where type = currType order by id asc  limit i, 1;
+            select ip_information into currProxyId from guide_proxy gp where status = 1 order by id asc limit i, 1;
+            update guide_account as ga set proxy_info = currProxyId where id = currAccountId;
             SET i = i + 1;
         END WHILE;
         set j = j + 1;
