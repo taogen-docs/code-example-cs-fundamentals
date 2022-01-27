@@ -14,6 +14,31 @@
 
 ## Schema Query
 
+List Database Size
+
+```sql
+SELECT table_schema "DB Name",
+        ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" 
+FROM information_schema.tables 
+GROUP BY table_schema; 
+```
+
+```sql
+SELECT table_schema AS "Database", SUM(data_length + index_length) / 1024 / 1024 AS "Size (MB)" 
+FROM information_schema.TABLES 
+GROUP BY table_schema
+ORDER BY SUM(data_length + index_length) desc;
+```
+
+```sql
+SELECT table_schema AS "Database", SUM(data_length + index_length) / 1024 / 1024 / 1024 AS "Size (GB)" 
+FROM information_schema.TABLES 
+GROUP BY table_schema
+ORDER BY SUM(data_length + index_length) desc;
+```
+
+
+
 List Table Sizes From a Single Database
 
 ```sql
@@ -125,7 +150,9 @@ FROM {tableName}
 GROUP BY {grouped_column_1}, {grouped_column_2}
 ```
 
-### Select Children
+### Join
+
+#### Select Children
 
 select children
 
@@ -151,6 +178,16 @@ a.id=349 OR
 a.parent_id = 349 OR 
 -- third level
 b.parent_id = 349
+```
+
+#### Join on Find in String Values
+
+```sql
+select ga.id, ga.account, max(gt.create_time)
+from examine.guide_account ga 
+left join examine.guide_task gt on find_in_set(ga.id, gt.account_ids)
+group by ga.id
+order by ga.id asc
 ```
 
 
@@ -345,6 +382,33 @@ AND COLUMN_NAME = 'column_name'
 
 
 
+## Throw Exception
+
+Throw Exception if not found
+
+```sql
+DROP FUNCTION IF EXISTS checkit_2022_01_26;
+DELIMITER //
+
+CREATE FUNCTION checkit_2022_01_26()
+RETURNS INT DETERMINISTIC
+BEGIN
+    DECLARE my_count INT;
+    SELECT COUNT(*) INTO my_count FROM sys_menu WHERE menu_name = "联系人";
+    IF my_count= 0 THEN
+        SIGNAL SQLSTATE 'ERR0R' SET MESSAGE_TEXT = "父菜单名称（联系人）不存在";
+    END IF;
+    RETURN my_count;
+END;
+//
+
+DELIMITER ;
+select checkit_2022_01_26() AS "父菜单数量";
+DROP FUNCTION IF EXISTS checkit_2022_01_26;
+```
+
+
+
 ## Built-In Functions
 
 Reference [Chapter 12 Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/functions.html)
@@ -500,5 +564,23 @@ set {your_column} =
          REPLACE(CONCAT(',', {your_column}, ','), CONCAT(',', #{remove_val}, ','), ',')
 	)
 where ....
+```
+
+Substring
+
+Return a substring of a string before a specified number of delimiter occurs
+
+`SUBSTRING_INDEX(string, delimiter, number)`
+
+```sql
+SELECT SUBSTRING_INDEX("www.google.com", ".", 1); -- www 
+```
+
+Extract a substring from the text in a column
+
+`SUBSTRING(*string*, *start*, *length*)`
+
+```sql
+SELECT SUBSTRING("Hello World", 7, 3) -- Wor
 ```
 
