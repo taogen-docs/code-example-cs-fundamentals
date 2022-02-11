@@ -150,6 +150,27 @@ FROM {tableName}
 GROUP BY {grouped_column_1}, {grouped_column_2}
 ```
 
+### Union
+
+Select from union
+
+```sql
+select * 
+from 
+(
+    select tf.id, tf.file_name as fileName, ti.name as `fileSource`, tf.create_time as createTime 
+    from transform_file tf 
+    left join transform_info ti on tf.file_transform_type = ti.`type` 
+    where file_name like "%xxx%"
+    union all
+    select id, file_name  as fileName, "文档审核" as `fileSource`, create_time as createTime
+    from examine_file ef 
+    where file_name like "%xxx%"
+) as temp
+order by createTime desc
+limit 0, 10
+```
+
 ### Join
 
 #### Select Children
