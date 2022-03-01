@@ -152,7 +152,7 @@ GROUP BY {grouped_column_1}, {grouped_column_2}
 
 ### Union
 
-Select from union
+#### Select from union
 
 ```sql
 select * 
@@ -169,6 +169,28 @@ from
 ) as temp
 order by createTime desc
 limit 0, 10
+```
+
+#### order by in union by subqueries 
+
+```sql
+select val
+from (
+    select * from (
+        select values1 as val
+        from table1 
+        order by orderby1
+        limit 3
+    ) as a
+    union all
+    select * from (
+        select values2 as val
+        from table2 
+        order by orderby2
+        limit 3
+    ) as b
+) as temp
+order by val asc
 ```
 
 ### Join
