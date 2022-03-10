@@ -27,6 +27,8 @@ FROM
 
 ### on duplicate key update
 
+Just update unique key fields for ignore insert this row.
+
 ```sql
 INSERT INTO recovery_words
 (words, type, group_id, user_name, user_id) 
