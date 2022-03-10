@@ -12,67 +12,11 @@
 - Call Procedure or function
 - Built-In Functions
 
-## Schema Query
-
-List Database Size
-
-```sql
-SELECT table_schema "DB Name",
-        ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" 
-FROM information_schema.tables 
-GROUP BY table_schema; 
-```
-
-```sql
-SELECT table_schema AS "Database", SUM(data_length + index_length) / 1024 / 1024 AS "Size (MB)" 
-FROM information_schema.TABLES 
-GROUP BY table_schema
-ORDER BY SUM(data_length + index_length) desc;
-```
-
-```sql
-SELECT table_schema AS "Database", SUM(data_length + index_length) / 1024 / 1024 / 1024 AS "Size (GB)" 
-FROM information_schema.TABLES 
-GROUP BY table_schema
-ORDER BY SUM(data_length + index_length) desc;
-```
-
-
-
-List Table Sizes From a Single Database
-
-```sql
-SELECT
-  TABLE_NAME AS `Table`,
-  ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) AS `Size (MB)`
-FROM
-  information_schema.TABLES
-WHERE
-  TABLE_SCHEMA = "{database_name}"
-ORDER BY
-  (DATA_LENGTH + INDEX_LENGTH)
-DESC;
-```
-
-List All Table Sizes From ALL Databases
-
-```sql
-SELECT
-  TABLE_SCHEMA AS `Database`,
-  TABLE_NAME AS `Table`,
-  ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) AS `Size (MB)`
-FROM
-  information_schema.TABLES
-ORDER BY
-  (DATA_LENGTH + INDEX_LENGTH)
-DESC;
-```
-
-
-
 ## Table Query
 
-### Queries
+### Select Values
+
+#### Select Values
 
 Query insert row primary key 'id'
 
@@ -87,14 +31,6 @@ SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(link, '://', -1), '/', 1) AS domain
 FROM {tableName}
 ```
 
-query to fetch only odd rows from the table
-
-```sql
-SELECT * 
-FROM {tableName} 
-WHERE MOD (userId, 2) <> 0;
-```
-
 Select row number
 
 ```sql
@@ -102,15 +38,22 @@ SELECT  *, ROW_NUMBER() OVER(ORDER BY id) AS row_num
 FROM crm_account
 ```
 
-### Conditional Query
+#### Conditional Query
 
-Select with conditions
+If else
 
 ```sql
 select 
 id, name,
 (select if(count(*)>0, true, false)) as flag
 from {tableName}
+```
+
+case when {condition} then {val1} else {val1} 
+
+```sql
+select (case when column_key = 'PRI' then '1' else '0' end) as is_pk
+from information_schema.columns
 ```
 
 if null then 0
@@ -126,14 +69,50 @@ if match a special value set value to null
 nullif(field, 'empty')
 ```
 
-case when {condition} then {val1} else {val1} 
+### Filter Values
+
+#### Filter Values
+
+query to fetch only odd rows from the table
 
 ```sql
-select (case when column_key = 'PRI' then '1' else '0' end) as is_pk
-from information_schema.columns
+SELECT * 
+FROM {tableName} 
+WHERE MOD (userId, 2) <> 0;
 ```
 
-### Deduplicate
+#### String Contains
+
+ INSTR, LOCATE, POSITION, LIKE
+
+- INSTR (*str*,*substr*)
+- LOCATE (*substr*,*str*), LOCATE (*substr*,*str*,*POS*)
+- POSITION (*substr* in *str*)  POSITION (substr in str) is a synonym for LOCATE (substr,str)
+- column LIKE "%substr%"
+
+```sql
+select name
+from (select 'abc' as name) as temp
+where INSTR(name, 'a') > 0;
+```
+
+```sql
+select name
+from (select 'abc' as name) as temp
+where locate('a', name) > 0;
+
+select name
+from (select 'abc' as name) as temp
+where POSITION("a" in name) > 0;
+```
+
+```sql
+select name
+from (select 'abc' as name) as temp
+where name like '%a%';
+```
+
+#### Deduplicate
 
 Select distinct columns
 
@@ -390,7 +369,9 @@ GROUP By site_id, year(pubtime), month(pubtime)
 ORDER by sum(LENGTH(CONTENT)) desc
 ```
 
-## Table Schema Query
+## Schema Query
+
+### Database Schema
 
 Databases
 
@@ -421,6 +402,60 @@ WHERE
     TABLE_SCHEMA = 'db_name' 
 AND TABLE_NAME = 'table_name' 
 AND COLUMN_NAME = 'column_name'
+```
+
+### Database Size
+
+List Database Size
+
+```sql
+SELECT table_schema "DB Name",
+        ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" 
+FROM information_schema.tables 
+GROUP BY table_schema; 
+```
+
+```sql
+SELECT table_schema AS "Database", SUM(data_length + index_length) / 1024 / 1024 AS "Size (MB)" 
+FROM information_schema.TABLES 
+GROUP BY table_schema
+ORDER BY SUM(data_length + index_length) desc;
+```
+
+```sql
+SELECT table_schema AS "Database", SUM(data_length + index_length) / 1024 / 1024 / 1024 AS "Size (GB)" 
+FROM information_schema.TABLES 
+GROUP BY table_schema
+ORDER BY SUM(data_length + index_length) desc;
+```
+
+List Table Sizes From a Single Database
+
+```sql
+SELECT
+  TABLE_NAME AS `Table`,
+  ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) AS `Size (MB)`
+FROM
+  information_schema.TABLES
+WHERE
+  TABLE_SCHEMA = "{database_name}"
+ORDER BY
+  (DATA_LENGTH + INDEX_LENGTH)
+DESC;
+```
+
+List All Table Sizes From ALL Databases
+
+```sql
+SELECT
+  TABLE_SCHEMA AS `Database`,
+  TABLE_NAME AS `Table`,
+  ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) AS `Size (MB)`
+FROM
+  information_schema.TABLES
+ORDER BY
+  (DATA_LENGTH + INDEX_LENGTH)
+DESC;
 ```
 
 
