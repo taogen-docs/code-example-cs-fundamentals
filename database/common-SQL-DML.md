@@ -144,6 +144,8 @@ SELECT sf_get_random_user_id();
 
 ## update
 
+### Update Examples
+
 Replacing string from http to https
 
 ```sql
@@ -152,7 +154,15 @@ UPDATE crm_task
 	WHERE file_uri LIKE '%http:%';
 ```
 
-update with join
+### Update with Conditions
+
+```sql
+UPDATE message 
+SET chat = if(message_from > message_to, concat(message_to, "-", message_from), concat(message_from, "-", message_to))
+WHERE chat IS NULL;
+```
+
+### Update with join
 
 ```sql
 UPDATE TABLE2

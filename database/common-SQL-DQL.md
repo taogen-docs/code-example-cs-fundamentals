@@ -1,17 +1,5 @@
 # Common SQL DQL
 
-**Content**
-
-- Schema Query
-- Table Query
-  - [Queries](#queries)
-    - [Conditional Query](#Conditional Query)
-    - [Deduplicate](#Deduplicate)
-  - [Aggregations](#Aggregations)
-- [Table Schema Query](#Table Schema Query)
-- Call Procedure or function
-- Built-In Functions
-
 ## Table Query
 
 ### Select Values
@@ -150,7 +138,7 @@ order by createTime desc
 limit 0, 10
 ```
 
-#### order by in union by subqueries 
+#### order by in union using subqueries 
 
 ```sql
 select val
@@ -369,6 +357,8 @@ GROUP By site_id, year(pubtime), month(pubtime)
 ORDER by sum(LENGTH(CONTENT)) desc
 ```
 
+## Call Procedure or function
+
 ## Schema Query
 
 ### Database Schema
@@ -380,6 +370,12 @@ SHOW databases;
 ```
 
 Tables
+
+```sql
+SELECT TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE
+FROM information_schema.TABLES 
+WHERE TABLE_NAME = '{table_name}';
+```
 
 ```sql
 DESC `table_name`;

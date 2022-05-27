@@ -124,13 +124,19 @@ ALTER TABLE `db_name`.`table_name`
 
 #### Renaming, Redefining, and Reordering Columns
 
+- `change` for updating column name
+- `alter`, `modify` for updating column properties
+
 alter column
 
 > Used to set or remove the default value for a column.
 
 ```sql
-ALTER TABLE MyTable ALTER COLUMN foo SET DEFAULT 'bar';
-ALTER TABLE MyTable ALTER COLUMN foo DROP DEFAULT;
+ALTER TABLE MyTable 
+ALTER COLUMN foo SET DEFAULT 'bar';
+
+ALTER TABLE MyTable 
+ALTER COLUMN foo DROP DEFAULT;
 ```
 
 change column
@@ -138,8 +144,11 @@ change column
 > Used to rename a column, change its datatype, or move it
 
 ```sql
-ALTER TABLE MyTable CHANGE COLUMN foo bar VARCHAR(32) NOT NULL FIRST;
-ALTER TABLE MyTable CHANGE COLUMN foo bar VARCHAR(32) NOT NULL AFTER baz;
+ALTER TABLE MyTable 
+CHANGE COLUMN foo bar VARCHAR(32) NOT NULL FIRST;
+
+ALTER TABLE MyTable 
+CHANGE COLUMN foo bar VARCHAR(32) NOT NULL AFTER baz;
 ```
 
 modify column
@@ -148,18 +157,22 @@ modify column
 
 ```mysql
 # update data type
-ALTER TABLE [tablename] MODIFY [columnName] [data_type] [is_null];
+ALTER TABLE [tablename] 
+MODIFY [columnName] [data_type] [is_null];
 ```
 
 ```sql
 # modify column to nullable
-ALTER TABLE guide_scheduler_weibo MODIFY start_time DATETIME null COMMENT '执行开始时间';
+ALTER TABLE guide_scheduler_weibo 
+MODIFY start_time DATETIME null COMMENT '执行开始时间';
 ```
 
 ```sql
 # set default value and extra
-ALTER TABLE [tablename] MODIFY create_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间';
-ALTER TABLE [tablename] MODIFY update_time DATETIME NULL ON UPDATE NOW() COMMENT '修改时间';
+ALTER TABLE [tablename] 
+MODIFY create_time DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间';
+ALTER TABLE [tablename] 
+MODIFY update_time DATETIME NULL ON UPDATE NOW() COMMENT '修改时间';
 ```
 
 ```mysql
