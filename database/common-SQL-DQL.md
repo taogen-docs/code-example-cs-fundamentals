@@ -138,7 +138,7 @@ order by createTime desc
 limit 0, 10
 ```
 
-#### order by in union using subqueries 
+#### order by in union using subqueries
 
 ```sql
 select val
@@ -199,8 +199,6 @@ left join examine.guide_task gt on find_in_set(ga.id, gt.account_ids)
 group by ga.id
 order by ga.id asc
 ```
-
-
 
 ### Aggregations
 
@@ -330,15 +328,15 @@ ORDER BY id DESC
 table data
 
 ```
-name 	content
-name1	value1
-name1	value2
+name     content
+name1    value1
+name1    value2
 ```
 
 result
 
 ```
-name1	value1|value2
+name1    value1|value2
 ```
 
 #### Group by date
@@ -454,8 +452,6 @@ ORDER BY
 DESC;
 ```
 
-
-
 ## Throw Exception
 
 Throw Exception if not found
@@ -481,8 +477,6 @@ select checkit_2022_01_26() AS "父菜单数量";
 DROP FUNCTION IF EXISTS checkit_2022_01_26;
 ```
 
-
-
 ## Built-In Functions
 
 Reference [Chapter 12 Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/functions.html)
@@ -507,7 +501,6 @@ Date Conversion
 - `STR_TO_DATE()`
 - `SEC_TO_TIME()`
 - `TIME_TO_SEC()`
-
 
 Date Extraction
 
@@ -567,18 +560,47 @@ Conversion
 Handling
 
 - get substring
-  - `SUBSTR(str,pos)`, `SUBSTR(str,pos,len)`, `SUBSTRING(str,pos)`
+  - `SUBSTR(str,pos)`, `SUBSTR(str,pos,len)`, `SUBSTRING(str,pos)`, `SUBSTRING(str,pos,len)`
+
+    ```sql
+    SELECT SUBSTRING("Hello World", 7, 3) -- Wor
+    ```
+
   - `LEFT(str,len)`
+
   - `RIGHT(str,len)`
-- find
+
+  - `SUBSTRING_INDEX(str, delim, count)`
+
+    ```sql
+    -- left
+    SELECT SUBSTRING_INDEX("www.google.com", ".", 1); -- www
+    -- right
+    SELECT SUBSTRING_INDEX("www.google.com", ".", -1); -- com
+    -- middle
+    SELECT SUBSTRING_INDEX(SUBSTRING_INDEX("www.google.com", ".", 2), ".", -1); -- google
+    ```
+
+- get substring index
+
   - `LOCATE(substr, str)`, `POSITION(substr in str)`
-  - `FIND_IN_SET(str, strList)`
+
+- concat
+
+  - `CONCAT(str1, str2, ...)`
+
+- contains
+
+  - `FIND_IN_SET(str, strList) > 0`
+
 - Match
   - `expression LIKE pattern`
   - `expression REGEX pattern`
+
 - Encode/Decode
-  -  `TO_BASE64(str)`, `FROM_BASE64(str)`
-  -  `HEX(str)`, `UNHEX(str)`
+  - `TO_BASE64(str)`, `FROM_BASE64(str)`
+  - `HEX(str)`, `UNHEX(str)`
+
 - Others
   - `CONCAT(str1, str2,...)`, `CONCAT_WS(seperator, str1, str2,...)`
   - `REPLACE(str, from_str, to_str)`
@@ -634,27 +656,9 @@ REPLACE(CONCAT(',', 'a,b,c', ','), CONCAT(',', 'a', ','), ',')
 ```sql
 update {your_table}
 set {your_column} = 
-	TRIM(BOTH ',' FROM
+    TRIM(BOTH ',' FROM
          REPLACE(CONCAT(',', {your_column}, ','), CONCAT(',', #{remove_val}, ','), ',')
-	)
+    )
 where ....
-```
-
-Substring
-
-Return a substring of a string before a specified number of delimiter occurs
-
-`SUBSTRING_INDEX(string, delimiter, number)`
-
-```sql
-SELECT SUBSTRING_INDEX("www.google.com", ".", 1); -- www 
-```
-
-Extract a substring from the text in a column
-
-`SUBSTRING(*string*, *start*, *length*)`
-
-```sql
-SELECT SUBSTRING("Hello World", 7, 3) -- Wor
 ```
 
