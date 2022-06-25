@@ -37,6 +37,7 @@ Test Cases
 - "0.", "1.", ".0", ".1", "1..2", "01.1" => false
 - "1.0", "0.7", "0.0001", "-1.2"  => true
 - "690.7" => true
+- `-0.1`????
 
 ### Integer
 
@@ -80,6 +81,18 @@ Test Cases
 - 1.1, 123.1, "-1.2" => true
 
 ## String
+
+### Email
+
+### URL
+
+### Telephone Number
+
+```
+^1[3-9][0-9]{9}$
+```
+
+
 
 ## Appendixes
 

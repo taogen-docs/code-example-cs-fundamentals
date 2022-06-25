@@ -662,3 +662,6 @@ set {your_column} =
 where ....
 ```
 
+## References
+
+- [String Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
