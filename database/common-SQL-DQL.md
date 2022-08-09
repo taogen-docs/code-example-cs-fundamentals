@@ -100,6 +100,21 @@ from (select 'abc' as name) as temp
 where name like '%a%';
 ```
 
+#### Part of Datetime
+
+Using between
+
+```sql
+`date` between '2022-07-01' and '2022-07-31'
+```
+
+Using function can't use index on MySQL
+
+```sql
+DATE_FORMAT(`date`, "%Y-%m") = "2022-07"
+YEAR(`date`) = "2022" and MONTH(`date`) = "7"
+```
+
 #### Deduplicate
 
 Select distinct columns

@@ -219,3 +219,29 @@ CALL update_account_proxy();
 
 
 ## delete
+
+delete with subquery as condition
+
+```sql
+DELETE FROM {table_name}
+WHERE id IN (
+    SELECT id
+    FROM (SELECT id
+          FROM {table_name}
+          WHERE foo = 'bar') as temp
+);
+```
+
+delete all rows in a group except the newest one
+
+```sql
+-- every group keep a row of latest id  
+delete from mytable
+where id not in 
+(
+  select max(id)
+  from mytable
+  group by {your_group_field}
+)
+```
+
