@@ -275,6 +275,8 @@ ORDER BY a.company_id, a.hours DESC;
 
 #### Aggregation by conditions
 
+Aggregation with conditions
+
 ```sql
 SELECT SUM(if(status=1, 1, 0)) 
 FROM {tableName}
@@ -283,6 +285,14 @@ FROM {tableName}
 ```sql
 SELECT SUM(if(a.acceptor_id=#{userId} AND a.STATUS='accepted', 1, 0))
 FROM {tableName}
+```
+
+Query count percent
+
+```sql
+SELECT SUM(if(status=1, 1, 0)) / COUNT(*)
+FROM {tableName}
+GROUP BY type
 ```
 
 #### Nested group

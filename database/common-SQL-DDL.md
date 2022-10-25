@@ -49,12 +49,21 @@ COMMENT='任务类型';
 
 ### Indexes
 
+index
+
 ```sql
 CREATE INDEX `title` USING BTREE 
 ON `crm_knowledge_file` (title(64));
 
 CREATE INDEX `parent_id` USING BTREE 
 ON `crm_knowledge_file_history` (parent_id);
+```
+
+unique index
+
+```sql
+CREATE UNIQUE INDEX index_name
+ON table_name(index_column_1,index_column_2,...);
 ```
 
 
