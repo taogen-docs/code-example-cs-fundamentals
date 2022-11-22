@@ -273,6 +273,76 @@ HAVING COUNT(*) < 3
 ORDER BY a.company_id, a.hours DESC;
 ```
 
+#### Query duplicate data
+
+```sql
+select * 
+from tableName as a
+Inner join (
+    select distinct colName
+    from tableName
+    group by distinct colName
+    having count(*) > 1
+) as b on a.colName = b.colName
+```
+
+or
+
+```sql
+select id, title, pubtime
+from recovery_data as a 
+inner join 
+(
+    select SUBSTRING_INDEX(url, '#', 1) as url 
+    from recovery_data
+    where pubtime between '2022-11-01 00:00:00' and '2022-11-01 23:59:59'
+    group by SUBSTRING_INDEX(url, '#', 1)
+    having count(*) > 1
+) as b on a.url like CONCAT(b.url, '%')
+where a.pubtime between '2022-11-01 00:00:00' and '2022-11-01 23:59:59'
+limit 0, 50
+```
+
+#### Query duplicate count
+
+Repeat count
+
+```sql
+select sum(*)
+from (
+    select count(*)
+    from tableName
+    group by distinct colName
+    having count(*) > 1
+) As temp
+```
+
+column substring repeat count
+
+```sql
+SELECT count(*) - count(DISTINCT SUBSTRING_INDEX(url, '#', 1)) FROM table_name;
+```
+
+#### Query redundant count
+
+```sql
+Select count(*) - count (distinct colName) from tableName
+```
+
+or
+
+```sql
+Select sum(*)
+From (
+Select count(*)-1
+From tableName
+Group by distinct colName
+Having count(*) > 1
+) As temp
+```
+
+
+
 #### Aggregation by conditions
 
 Aggregation with conditions
