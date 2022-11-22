@@ -59,17 +59,20 @@ nullif(field, 'empty')
 
 ### Select Rows
 
-#### Select random rows
-
-**No gap**
-
-Select random id
+#### Select random id with gaps
 
 ```sql
-SELECT CEIL(RAND() * (SELECT MAX(id) FROM recovery_data));
+select id from recovery_data 
+where id >= (SELECT CEIL(RAND() * (SELECT MAX(id) FROM recovery_data)))
+order by id asc 
+limit 1;
 ```
 
-select random rows
+```sql
+SELECT id FROM recovery_data ORDER BY RAND() LIMIT 10;
+```
+
+#### Select random rows no gap (rarely use)
 
 ```sql
 SELECT name 
@@ -81,9 +84,23 @@ FROM tableName JOIN
 USING (id)
 ```
 
-**Can having gap**
+#### Select random rows with gaps
 
-As soon as the distribution of the IDs is not equal anymore our selection of rows isn't really random either.
+Solution 1
+
+```sql
+-- This is fast because the sort phase only uses the indexed ID column.
+SELECT * FROM tbl AS t1 JOIN (SELECT id FROM tbl ORDER BY RAND() LIMIT 10) as t2 ON t1.id=t2.id
+```
+
+```sql
+-- Not the efficient solution but works. Sort all rows, but only retrieve few rows.
+SELECT * FROM table
+ORDER BY RAND()
+LIMIT 10
+```
+
+Solution 2
 
 ```sql
 SELECT name
@@ -97,7 +114,7 @@ SELECT name
  LIMIT 1;
 ```
 
-For select a real random row, we can add a ID mapping table `holes_map`
+As soon as the distribution of the IDs is not equal anymore our selection of rows isn't really random either. For select a real random row, we can add a ID mapping table `holes_map`
 
 ```
 row_id | random_id |
@@ -120,14 +137,6 @@ SELECT name FROM random
         WHERE r1.row_id >= r2.row_id
         ORDER BY r1.row_id ASC
         LIMIT 1) as rows ON (id = random_id);
-```
-
-Not the efficient solution but works. Sort all rows, but only retrieve few rows.
-
-```sql
-SELECT column FROM table
-ORDER BY RAND()
-LIMIT 1
 ```
 
 ### Filter Values
@@ -833,3 +842,5 @@ where ....
 ## References
 
 - [String Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)
+- [MySQL select 10 random rows from 600K rows fast](https://stackoverflow.com/questions/4329396/mysql-select-10-random-rows-from-600k-rows-fast)
+- [ORDER BY RAND()](http://jan.kneschke.de/projects/mysql/order-by-rand/)
