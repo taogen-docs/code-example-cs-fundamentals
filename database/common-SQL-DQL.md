@@ -57,6 +57,79 @@ if match a special value set value to null
 nullif(field, 'empty')
 ```
 
+### Select Rows
+
+#### Select random rows
+
+**No gap**
+
+Select random id
+
+```sql
+SELECT CEIL(RAND() * (SELECT MAX(id) FROM recovery_data));
+```
+
+select random rows
+
+```sql
+SELECT name 
+FROM tableName JOIN
+(SELECT CEIL(RAND() *
+             (SELECT MAX(id)
+              FROM tableName)) AS id
+) AS r2
+USING (id)
+```
+
+**Can having gap**
+
+As soon as the distribution of the IDs is not equal anymore our selection of rows isn't really random either.
+
+```sql
+SELECT name
+  FROM random AS r1 JOIN
+       (SELECT (RAND() *
+                     (SELECT MAX(id)
+                        FROM random)) AS id)
+        AS r2
+ WHERE r1.id >= r2.id
+ ORDER BY r1.id ASC
+ LIMIT 1;
+```
+
+For select a real random row, we can add a ID mapping table `holes_map`
+
+```
+row_id | random_id |
++--------+-----------+
+|      1 |         1 |
+|      2 |         2 |
+|      3 |         4 |
+|      4 |         8 |
+|      5 |        16
+```
+
+```sql
+SELECT name FROM random
+  JOIN (SELECT r1.random_id
+        FROM holes_map AS r1
+        JOIN (SELECT (RAND() *
+                      (SELECT MAX(row_id)
+                       FROM holes_map)) AS row_id)
+        AS r2
+        WHERE r1.row_id >= r2.row_id
+        ORDER BY r1.row_id ASC
+        LIMIT 1) as rows ON (id = random_id);
+```
+
+Not the efficient solution but works. Sort all rows, but only retrieve few rows.
+
+```sql
+SELECT column FROM table
+ORDER BY RAND()
+LIMIT 1
+```
+
 ### Filter Values
 
 #### Filter Values
