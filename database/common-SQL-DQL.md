@@ -86,11 +86,11 @@ USING (id)
 
 #### Select random rows with gaps
 
-Solution 1
+Solution 1: for small data tables (less than few million rows)
 
 ```sql
 -- This is fast because the sort phase only uses the indexed ID column.
-SELECT * FROM tbl AS t1 JOIN (SELECT id FROM tbl ORDER BY RAND() LIMIT 10) as t2 ON t1.id=t2.id
+SELECT t1.* FROM tbl AS t1 JOIN (SELECT id FROM tbl ORDER BY RAND() LIMIT 10) as t2 ON t1.id=t2.id
 ```
 
 ```sql
@@ -100,14 +100,14 @@ ORDER BY RAND()
 LIMIT 10
 ```
 
-Solution 2
+Solution 2: for large data tables
 
 ```sql
 SELECT name
-  FROM random AS r1 JOIN
+FROM random AS r1 JOIN
        (SELECT (RAND() *
-                     (SELECT MAX(id)
-                        FROM random)) AS id)
+                (SELECT MAX(id)
+                 FROM random)) AS id)
         AS r2
  WHERE r1.id >= r2.id
  ORDER BY r1.id ASC
