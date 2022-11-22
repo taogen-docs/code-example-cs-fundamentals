@@ -423,6 +423,35 @@ Having count(*) > 1
 ) As temp
 ```
 
+distinct with substring
+
+```sql
+-- str.subtring(0, str.indexOf("#ocr"))
+select count(*) - count(DISTINCT SUBSTRING_INDEX(url, '#ocr', 1)) 
+from tableName
+
+-- if (str.endWiths("#orc")) { str.subtring(0, str.indexOf("#ocr")) } else { str }
+select count(*) - count(DISTINCT if(LOCATE('#ocr', url) + 3 =  CHAR_LENGTH(url), SUBSTRING_INDEX(url, '#ocr', 1), url)) 
+from tableName
+```
+
+concat "#ocr" string number
+
+```sql
+select count(*)
+from (
+select distinct a.url
+from tableName as a 
+where a.pubtime BETWEEN '2022-11-21 09:00:00' and '2022-11-21 09:10:00'
+) as t1
+inner join 
+(
+select b.url
+from tableName as b
+where b.url like "%#ocr" and b.pubtime BETWEEN '2022-11-21 09:00:00' and '2022-11-21 09:10:00'
+) as t2 on concat(t1.url, "#ocr") = t2.url
+```
+
 
 
 #### Aggregation by conditions
