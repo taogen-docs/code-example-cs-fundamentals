@@ -199,20 +199,32 @@ YEAR(`date`) = "2022" and MONTH(`date`) = "7"
 
 #### Deduplicate
 
-Select distinct columns
+**Select distinct columns**
+
+by `distinct`
 
 ```sql
 SELECT DISTINCT {distinct_column_1} {distinct_column_2}
 FROM {tableName}
 ```
 
-select distinct columns by group
+by `group`
 
 ```sql
 SELECT {grouped_column_1}, {grouped_column_2}
 FROM {tableName}
 GROUP BY {grouped_column_1}, {grouped_column_2}
 ```
+
+**Select all columns deduplicate by part of columns**
+
+```sql
+SELECT *
+FROM {tableName}
+GROUP BY {grouped_column_1}, {grouped_column_2}
+```
+
+
 
 ### Union
 
