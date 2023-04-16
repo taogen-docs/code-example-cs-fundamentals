@@ -21,7 +21,7 @@
 
 ## Group
 
-### Query rows of Top N Group order by a field
+### Query rows of Top N Group and rows of a group order by a field
 
 Using terms to get groups
 
