@@ -114,14 +114,25 @@ ALTER TABLE t1 CHARACTER SET = utf8;
 ALTER TABLE t1 COMMENT = 'New table comment';
 ```
 
+### Columns
+
 #### Adding and Dropping Columns
 
 Add Columns
 
 ```sql
-ALTER TABLE `examine`.`sys_user`
-	ADD COLUMN `type` TINYINT NULL COMMENT '账号类型（0正常，1舆情系统插入)'
+ALTER TABLE `db_name`.`table_name`
+	ADD COLUMN `type` TINYINT NULL COMMENT 'xxx'
 	AFTER `status`;
+```
+
+Add multiple columns
+
+```sql
+ALTER TABLE `db_name`.`table_name`
+	ADD COLUMN `col1` SMALLINT(6) NOT NULL AFTER `col0`,
+	ADD COLUMN `col2` VARCHAR(12) NOT NULL AFTER `col1`,
+	ADD COLUMN `col3` INT(10) UNSIGNED NOT NULL AFTER `col2`;
 ```
 
 Drop Columns
@@ -192,6 +203,12 @@ ALTER TABLE [tablename] CHANGE [columnName] DECIMAL (10,2)
 
 
 ## DROP
+
+### Indexes
+
+```sql
+DROP INDEX index_name ON table_name; 
+```
 
 
 
