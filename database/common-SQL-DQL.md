@@ -573,6 +573,19 @@ GROUP By site_id, year(pubtime), month(pubtime)
 ORDER by sum(LENGTH(CONTENT)) desc
 ```
 
+#### Find groups that all rows have the same column value
+
+**Find users with all tasks completed**
+
+```sql
+select user_id
+from user_task
+group by user_id
+HAVING sum(if(finish_status=2, 1, 0)) = count(*)
+```
+
+finish_status: 0 wait, 1 in_progress, 2 success, 3 fail
+
 ## Complex Query Examples
 
 ### Query word frequency
