@@ -787,6 +787,15 @@ Date Computation
   - `TIMEDIFF()`
   - `TIMESTAMPADD()`
   - `TIMESTAMPDIFF()`
+- Other
+  - Get start of the day:
+    - `DATE_FORMAT(now(), '%Y-%m-%d 00:00:00')` 
+    - or `DATE_FORMAT(CONCAT(CURDATE(), ' 00:00:00'), '%m/%d/%Y %H:%i:%s')`
+
+  - Get end of the day: 
+    - `DATE_FORMAT(now(), '%Y-%m-%d 23:59:59')` 
+    - or `DATE_FORMAT(CONCAT(CURDATE(), ' 23:59:59'), '%m/%d/%Y %H:%i:%s')`
+
 
 Date Format
 
@@ -801,8 +810,8 @@ Date Time Build
 
 String Info
 
-- `LENGTH(str)`
-- `CHAR_LENGTH(str)`, `CHARACTER_LENGTH(str)`
+- `CHAR_LENGTH(str)`, `CHARACTER_LENGTH(str)`: the length of a string (in characters)
+- `LENGTH(str)`:  the *length* of a string (in bytes)
 
 Conversion
 
