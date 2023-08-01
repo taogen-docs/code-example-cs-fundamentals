@@ -557,7 +557,19 @@ result
 name1    value1|value2
 ```
 
-#### Group by date
+#### Group by Date
+
+**Group by Date**
+
+```sql
+group by DATE_FORMAT(pubtime, '%Y-%m-%d')
+```
+
+```sql
+group by DATE(pubtime)
+```
+
+**Group by month**
 
 ```sql
 select site_id,DATE_FORMAT(pubtime, '%Y%m'), count(*) as '文章数', sum(LENGTH(CONTENT)) as "字数"
