@@ -476,6 +476,11 @@ FROM {tableName}
 ```
 
 ```sql
+SELECT SUM(if(operate_type = 0, amount, -amount))
+FROM {tableName}
+```
+
+```sql
 SELECT SUM(if(a.acceptor_id=#{userId} AND a.STATUS='accepted', 1, 0))
 FROM {tableName}
 ```
