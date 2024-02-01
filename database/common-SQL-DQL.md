@@ -1,5 +1,26 @@
 # Common SQL DQL
 
+## Database Query
+
+Select all tables from a database
+
+```sql
+select
+    TABLE_SCHEMA as tableSchema,
+    TABLE_NAME as tableName,
+    TABLE_COMMENT as tableComment,
+    CREATE_TIME as createTime,
+    UPDATE_TIME as updateTime
+from information_schema.tables
+where table_schema = 'database_name';
+```
+
+```sql
+select CONCAT('- ', TABLE_NAME, ': ', TABLE_COMMENT)  
+from information_schema.tables  
+where table_schema = 'database_name';
+```
+
 ## Table Query
 
 ### Select Values
