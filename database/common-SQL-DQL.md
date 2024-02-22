@@ -1,5 +1,16 @@
 # Common SQL DQL
 
+```sql
+SELECT
+FROM
+JOIN
+WHERE
+GROUP BY
+HAVING
+ORDER BY
+LIMIT
+```
+
 ## Database Query
 
 Select all tables from a database
